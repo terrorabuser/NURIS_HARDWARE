@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import os
 
 
-def generate_fuel(start=0, need=1):
+def generate_fuel():
     def create_uniform_fms_file(filename, fm_1_hour, fm_10_hour, fm_100_hour, fm_1000_hour, herbaceous_fm, live_woody_fm):
         """
         Создаёт .fms файл, в котором значения влажности для всех строк одинаковы,
@@ -18,23 +18,22 @@ def generate_fuel(start=0, need=1):
                     f"{model_id} {fm_1_hour} {fm_10_hour} {fm_100_hour} {herbaceous_fm} {live_woody_fm} {fm_1000_hour}\n")
 
 
-    for i in range(start + 1, need + 1):
-        filename = rf"zip\pozar{i}\generated_fuel_moisture_data_{i}.fms"
-        folder_path = rf"zip\pozar{i}"
-        os.makedirs(folder_path, exist_ok=True)
-        create_uniform_fms_file(
-            filename=filename,
-            fm_1_hour=random.randint(1, 10),
-            fm_10_hour=random.randint(10, 20),
-            fm_100_hour=random.randint(20, 30),
-            fm_1000_hour=random.randint(30, 40),
-            herbaceous_fm=random.randint(50, 80),
-            live_woody_fm=random.randint(90, 120)
-        )
-        print(f"Файл '{filename}' успешно создан")
+    folder_path = "input_flammap"  # Папка для первого файла
+    os.makedirs(folder_path, exist_ok=True)
+    filename = rf"{folder_path}/generated_fuel_moisture_data_1.fms"
+    create_uniform_fms_file(
+        filename=filename,
+        fm_1_hour=random.randint(1, 10),
+        fm_10_hour=random.randint(10, 20),
+        fm_100_hour=random.randint(20, 30),
+        fm_1000_hour=random.randint(30, 40),
+        herbaceous_fm=random.randint(50, 80),
+        live_woody_fm=random.randint(90, 120)
+    )
+    print(f"Файл '{filename}' успешно создан")
 
 
-def generate_weather(start=0, need=1):
+def generate_weather():
     def generate_value(current, change_range, min_value, max_value):
         new_value = current + random.uniform(-change_range, change_range)
         return max(min_value, min(max_value, new_value))
@@ -117,27 +116,26 @@ def generate_weather(start=0, need=1):
 
         return wind_spd_values, wind_dir_values
 
-    for i in range(start + 1, need + 1):
-        folder_path = rf"zip\pozar{i}"
-        os.makedirs(folder_path, exist_ok=True)
-        file_name = rf'zip\pozar{i}\Generated_Weather_Data_{i}.wxs'
-        start_date = datetime(2023, 1, 1) + timedelta(days=i-1)  # Определяем start_date
-        wind_spd_values, wind_dir_values = create_wxs_file(file_name, start_date)
-        print(f"Файл '{file_name}' успешно создан")
+    folder_path = "input_flammap"  # Папка для первого файла
+    os.makedirs(folder_path, exist_ok=True)
+    file_name = rf"{folder_path}/Generated_Weather_Data_1.wxs"
+    start_date = datetime(2023, 1, 1)  # Начальная дата
+    wind_spd_values, wind_dir_values = create_wxs_file(file_name, start_date)
+    print(f"Файл '{file_name}' успешно создан")
 
-        # Вычисление средних значений
-        avg_wind_spd = sum(wind_spd_values) / len(wind_spd_values)
-        avg_wind_dir = sum(wind_dir_values) / len(wind_dir_values)
+    # Вычисление средних значений
+    avg_wind_spd = sum(wind_spd_values) / len(wind_spd_values)
+    avg_wind_dir = sum(wind_dir_values) / len(wind_dir_values)
 
     return avg_wind_spd, avg_wind_dir
 
 
 def gen():
-    start_file = int(input("Сколько файлов у вас имеется"))
-    need_file = int(input("Сколько файлов вам нужно досоздать"))
+    generate_fuel()  # Генерация одного файла с топливной влажностью
+    avg_wind_spd, avg_wind_dir = generate_weather()  # Генерация одного файла с погодой
 
-    avg_wind_spd, avg_wind_dir = generate_fuel(start_file, need_file), generate_weather(start_file, need_file)
+    print(f"Средняя скорость ветра: {avg_wind_spd}")
     print(f"Среднее направление ветра: {avg_wind_dir}")
-    
-    return avg_wind_dir[0], avg_wind_dir[1]
+
+    return avg_wind_spd, avg_wind_dir
 

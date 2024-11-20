@@ -9,14 +9,17 @@ from generate import *
 # Файл для хранения разметки
 COORDINATES_FILE = "clicks.json"
 
-def record_clicks():
+def record_clicks(spd, dir):
     """Режим записи координат кликов и ввода числа из переменной."""
     print("Режим разметки включён. Используйте клавиши:")
     print("- ЛКМ (Ctrl): добавляет клик ЛКМ")
+    print("- ЛКМ (L): добавляет клик ЛКМ ДОЛГИЙ 15 сек")
     print("- ПКМ (Alt): добавляет клик ПКМ")
-    print("- Ввод числа (N): добавляет число из переменной")
+    print("- Ввод числа (N): добавляет число spd")
+    print("- Ввод числа (M): добавляет число dir")
+    print("- Ввод числа (B): BACKSPACE")
     print("Нажмите 'q', чтобы завершить.")
-    spd, dir = gen()
+    
     
     actions = []
     
@@ -28,6 +31,11 @@ def record_clicks():
             # ЛКМ разметка
             if keyboard.is_pressed('ctrl'):
                 print(f"ЛКМ добавлена: ({x}, {y})")
+                actions.append({"action": "click", "button": "left", "position": (x, y)})
+                time.sleep(0.5)
+            # ЛКМ разметка долгая
+            if keyboard.is_pressed('l'):
+                print(f"ЛКМ 15 добавлена: ({x}, {y})")
                 actions.append({"action": "click", "button": "left", "position": (x, y)})
                 time.sleep(0.5)
             
@@ -113,7 +121,7 @@ def replay_clicks(delay=1):
 if __name__ == "__main__":
     
 
-    
+    spd,dir = gen()
 
     print("Выберите режим:")
     print("1: Разметка действий")
@@ -122,10 +130,13 @@ if __name__ == "__main__":
     
     if mode == "1":
         open_program(r"C:\Workspace\FlamMap6\FlamMap6.exe")
-        record_clicks()
+        record_clicks(spd,dir)
     elif mode == "2":
         delay = float(input("Введите задержку между действиями (в секундах): "))
         open_program(r"C:\Workspace\FlamMap6\FlamMap6.exe")
         replay_clicks(delay=delay)
     else:
         print("Неверный выбор.")
+
+
+
