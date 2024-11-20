@@ -5,21 +5,19 @@ import keyboard
 import subprocess
 from generate import *
 
-
 # Файл для хранения разметки
 COORDINATES_FILE = "clicks.json"
 
 def record_clicks(spd, dir):
-    """Режим записи координат кликов и ввода числа из переменной."""
+    """Режим записи координат кликов и ввода строки из переменной."""
     print("Режим разметки включён. Используйте клавиши:")
     print("- ЛКМ (Ctrl): добавляет клик ЛКМ")
     print("- ЛКМ (L): добавляет клик ЛКМ ДОЛГИЙ 15 сек")
     print("- ПКМ (Alt): добавляет клик ПКМ")
-    print("- Ввод числа (N): добавляет число spd")
-    print("- Ввод числа (M): добавляет число dir")
-    print("- Ввод числа (B): BACKSPACE")
+    print("- Ввод строки (N): добавляет строку spd")
+    print("- Ввод строки (M): добавляет строку dir")
+    print("- Ввод строки (B): BACKSPACE")
     print("Нажмите 'q', чтобы завершить.")
-    
     
     actions = []
     
@@ -33,11 +31,6 @@ def record_clicks(spd, dir):
                 print(f"ЛКМ добавлена: ({x}, {y})")
                 actions.append({"action": "click", "button": "left", "position": (x, y)})
                 time.sleep(0.5)
-            # ЛКМ разметка долгая
-            if keyboard.is_pressed('l'):
-                print(f"ЛКМ 15 добавлена: ({x}, {y})")
-                actions.append({"action": "click", "button": "left", "position": (x, y)})
-                time.sleep(0.5)
             
             # ПКМ разметка
             if keyboard.is_pressed('alt'):
@@ -45,19 +38,26 @@ def record_clicks(spd, dir):
                 actions.append({"action": "click", "button": "right", "position": (x, y)})
                 time.sleep(0.5)
             
-            # Ввод числа
+            # Ввод строки
             if keyboard.is_pressed('n'):
-                # Пример переменной, число будет вставлено
-                variable_number = int(spd)  # Переменная с числом
-                print(f"Ввод числа {variable_number} добавлен.")
-                actions.append({"action": "type", "number": variable_number})
+                # Пример строки, будет вставлена переменная spd
+                variable_string = str(spd)  # Преобразуем переменную в строку
+                print(f"Ввод строки: {variable_string}")
+                actions.append({"action": "type", "string": variable_string})
+                time.sleep(0.5)
+                
+            if keyboard.is_pressed('v'):
+                # Пример строки, будет вставлена переменная с путем
+                variable_string = r"D:\coding\NURIS_HARDWARE\not_csv"  # Строка пути
+                print(f"Ввод строки: {variable_string}")
+                actions.append({"action": "type", "string": variable_string})
                 time.sleep(0.5)
                 
             if keyboard.is_pressed('m'):
-                # Пример переменной, число будет вставлено
-                variable_number = int(dir)  # Переменная с числом
-                print(f"Ввод числа {variable_number} добавлен.")
-                actions.append({"action": "type", "number": variable_number})
+                # Пример строки, будет вставлена переменная dir
+                variable_string = str(dir)  # Преобразуем переменную в строку
+                print(f"Ввод строки: {variable_string}")
+                actions.append({"action": "type", "string": variable_string})
                 time.sleep(0.5)
                 
             if keyboard.is_pressed('b'):
@@ -83,9 +83,8 @@ def open_program(path_to_program):
     subprocess.Popen(path_to_program)
     time.sleep(5)  # Подождать, пока программа загрузится
     
-    
 def replay_clicks(delay=1):
-    """Режим воспроизведения кликов и чисел."""
+    """Режим воспроизведения кликов и строк."""
     try:
         # Загрузить разметку из файла
         with open(COORDINATES_FILE, "r") as f:
@@ -109,9 +108,9 @@ def replay_clicks(delay=1):
                 print(f"Клик ({button.upper()}) по ({x}, {y})")
             
             elif action["action"] == "type":
-                number = action["number"]
-                print(f"Ввод числа: {number}")
-                pyautogui.typewrite(str(number))
+                string_value = action["string"]
+                print(f"Ввод строки: {string_value}")
+                pyautogui.typewrite(string_value)
             
             time.sleep(delay)  # Задержка между действиями
     except KeyboardInterrupt:
@@ -119,9 +118,7 @@ def replay_clicks(delay=1):
         
 
 if __name__ == "__main__":
-    
-
-    spd,dir = gen()
+    spd, dir = gen()
 
     print("Выберите режим:")
     print("1: Разметка действий")
@@ -130,13 +127,10 @@ if __name__ == "__main__":
     
     if mode == "1":
         open_program(r"C:\Workspace\FlamMap6\FlamMap6.exe")
-        record_clicks(spd,dir)
+        record_clicks(spd, dir)
     elif mode == "2":
         delay = float(input("Введите задержку между действиями (в секундах): "))
         open_program(r"C:\Workspace\FlamMap6\FlamMap6.exe")
         replay_clicks(delay=delay)
     else:
         print("Неверный выбор.")
-
-
-
