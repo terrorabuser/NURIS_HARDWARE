@@ -17,6 +17,6 @@ time.sleep(1)
 
 file_path = r'Lassen Volcanic National Park.tif'
 pyautogui.write(file_path)
-pyautogui.press('enter')
+
 
 print(pyautogui.position())
