@@ -16,7 +16,7 @@ def create_uniform_fms_file(filename, fm_1_hour, fm_10_hour, fm_100_hour, fm_100
 
 
 # Пример использования функции
-filename = "C:/landscapes flamemap/FMS Files/generated_fuel_moisture_data104.fms"
+filename = r"fuel_fms\Fuel_1.fms"
 create_uniform_fms_file(
     filename=filename,
     fm_1_hour = random.randint(1, 10),
@@ -28,3 +28,5 @@ create_uniform_fms_file(
 )
 
 print(f"Файл '{filename}' успешно создан с одинаковыми значениями для каждого столбца, кроме первого.")
+
+
