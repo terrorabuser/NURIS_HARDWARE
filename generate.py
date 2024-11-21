@@ -23,7 +23,7 @@ def generate_fuel():
     filename = rf"{folder_path}/generated_fuel_moisture_data_1.fms"
     create_uniform_fms_file(
         filename=filename,
-        fm_1_hour=random.randint(1, 10),
+        fm_1_hour=random.randint(2, 10),
         fm_10_hour=random.randint(10, 20),
         fm_100_hour=random.randint(20, 30),
         fm_1000_hour=random.randint(30, 40),
