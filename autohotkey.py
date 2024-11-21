@@ -29,14 +29,15 @@ def save_coordinates():
         button_index += 1  # Увеличиваем индекс для следующей кнопки
 
 # Основной цикл
-try:
-    while True:
-        save_coordinates()
-        
-        # Завершение программы по нажатию клавиши 'Esc'
-        if keyboard.is_pressed('esc'):
-            print("Завершаем программу...")
-            break  # Выход из цикла и завершение программы
-except KeyboardInterrupt:
-    print("Программа была прервана пользователем.")
-    sys.exit()
+def clicker():
+    try:
+        while True:
+            save_coordinates()
+            
+            # Завершение программы по нажатию клавиши 'Esc'
+            if keyboard.is_pressed('esc'):
+                print("Завершаем программу...")
+                break  # Выход из цикла и завершение программы
+    except KeyboardInterrupt:
+        print("Программа была прервана пользователем.")
+        sys.exit()

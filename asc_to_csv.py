@@ -4,11 +4,19 @@ import csv
 import math
 import zipfile
 from datetime import datetime
+import paths
 
-source_folder = os.path.normpath(r'C:\Users\Nikita\Desktop\codes\flames\not_csv')
-destination_folder = os.path.normpath(r'C:\Users\Nikita\Desktop\codes\flames\csv')
-fms_and_wxs_folder = os.path.normpath(r'C:\Users\Nikita\Desktop\codes\flames\input_flammap')
-zip_files_folder = os.path.normpath(r'C:\Users\Nikita\Desktop\codes\flames\zip_files')
+
+source_folder = paths.SOURCE_FOLDER
+destination_folder = paths.DESTINATION_FOLDER
+fms_and_wxs_folder = paths.FMS_AND_WXS_FOLDER
+zip_files_folder = paths.ZIP_FILES_FOLDER
+
+
+# source_folder = os.path.normpath(r'C:\Users\Nikita\Desktop\codes\flames\not_csv')
+# destination_folder = os.path.normpath(r'C:\Users\Nikita\Desktop\codes\flames\csv')
+# fms_and_wxs_folder = os.path.normpath(r'C:\Users\Nikita\Desktop\codes\flames\input_flammap')
+# zip_files_folder = os.path.normpath(r'C:\Users\Nikita\Desktop\codes\flames\zip_files')
 
 for file_name in os.listdir(source_folder):
         print(file_name)

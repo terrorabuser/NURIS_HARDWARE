@@ -5,32 +5,31 @@ import subprocess
 import os
 import pyperclip
 import keyboard
+import paths
 
 #1080 790
 #1030 830
 
 
 def clicker(spd,dir):
-    
-    # pyautogui.PAUSE = 0.2
-    
+        
     def write_via_clipboard(text):
         time.sleep(0.5)
         pyperclip.copy(text)  # Скопировать текст в буфер обмена
         text = pyperclip.paste()  # Получаем текст из буфера обмена
         keyboard.write(text)
         time.sleep(0.5)
-        # pyautogui.hotkey('ctrl', 'v')  # Вставить текст через Ctrl+V
+        pyperclip.copy("")
 
+    photo_path = paths.PHOTO_PATH
+    fms_path = paths.FMS_PATH
+    wxs_path = paths.WXS_PATH
+    not_csv = paths.SOURCE_FOLDER
+    flammap_path = paths.FLAMMAP_PATH
     
-    photo_path = os.path.normpath(r"C:\Users\Nikita\Desktop\flammap\files\Lassen Volcanic National Park.tif")
-    fms_path = os.path.normpath(r"C:\Users\Nikita\Desktop\codes\flames\input_flammap\generated_fuel_moisture_data_1.fms")
-    wxs_path = os.path.normpath(r"C:\Users\Nikita\Desktop\codes\flames\input_flammap\Generated_Weather_Data_1.wxs")
-    not_csv = os.path.normpath(r"C:\Users\Nikita\Desktop\codes\flames\not_csv")
     with open("coordinates.json", "r") as file:
         button_coordinates = json.load(file)
     time.sleep(1)
-    flammap_path = r"C:\Workspace\FlamMap6\FlamMap6.exe"
     subprocess.Popen(flammap_path)
     time.sleep(5)  # Подождите, пока программа запустится
 
@@ -39,7 +38,6 @@ def clicker(spd,dir):
     pyautogui.click(x=button_coordinates['button_2']['x'], y=button_coordinates['button_2']['y'])
     time.sleep(2)
     write_via_clipboard(photo_path)
-    # pyautogui.write(photo_path)
     time.sleep(2)
     pyautogui.press('enter')
 
@@ -53,7 +51,6 @@ def clicker(spd,dir):
     time.sleep(1)
     pyautogui.click(x=button_coordinates['button_7']['x'], y=button_coordinates['button_7']['y']) #directory in folder
     write_via_clipboard(fms_path)
-    # pyautogui.write(fms_path)
     time.sleep(2)
     pyautogui.press('enter')
     time.sleep(2)
@@ -69,7 +66,6 @@ def clicker(spd,dir):
     pyautogui.click(x=button_coordinates['button_13']['x'], y=button_coordinates['button_13']['y'])
     pyautogui.click(x=button_coordinates['button_14']['x'], y=button_coordinates['button_14']['y']) #directory in folder
     write_via_clipboard(wxs_path)
-    # pyautogui.write(wxs_path)
     time.sleep(2)
     pyautogui.press('enter')
     time.sleep(1)
@@ -141,12 +137,10 @@ def clicker(spd,dir):
     pyautogui.press('backspace')
     time.sleep(1)
     write_via_clipboard(not_csv)
-    # pyautogui.write(not_csv)
     time.sleep(2)
     pyautogui.press('enter')
     pyautogui.click(x=button_coordinates['button_41']['x'], y=button_coordinates['button_41']['y'])
     write_via_clipboard('Flame Length')
-    # pyautogui.write('Flame Length')
     time.sleep(0.5)
     pyautogui.click(x=button_coordinates['button_42']['x'], y=button_coordinates['button_42']['y']) #Choise format
     pyautogui.sleep(0.3)
